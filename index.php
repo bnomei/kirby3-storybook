@@ -4,9 +4,19 @@
 
 Kirby::plugin('bnomei/storybook', [
     'options' => [
-        'cli' => fn() => php_sapi_name() === 'cli',
+        'cli' => fn () => php_sapi_name() === 'cli',
+        'folder' => function (): ?string {
+            $finder = new \Symfony\Component\Finder\Finder();
+            $finder->files()->in(kirby()->root('index'))
+                ->notPath('/.*node_modules.*/')
+                ->name('stories');
+            foreach ($finder->directories() as $dir) {
+                return $dir->getRealPath();
+            }
+            return null;
+        },
         'stories' => [
-            'json' => fn() => class_exists('Kirby\Kql\Kql'),
+            'json' => fn () => class_exists('Kirby\Kql\Kql'),
             'yml' => true,
         ],
         'watcher' => [

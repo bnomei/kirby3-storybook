@@ -1,0 +1,6 @@
+blueprint: page
+
+sections:
+  pages:
+    type: pages
+    template: post

@@ -3,5 +3,5 @@
 return [
     'debug' => true,
 
-    'bnomei.storyboard.watcher.errors' => true,
+    'bnomei.storybook.watcher.errors' => true,
 ];

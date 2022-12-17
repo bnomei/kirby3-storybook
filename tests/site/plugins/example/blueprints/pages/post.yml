@@ -1,0 +1,14 @@
+blueprint: page
+
+fields:
+  blocks:
+    type: blocks
+    fieldsets:
+      - heading
+      - text
+      - line
+
+  blockquote:
+    type: textarea
+  cite:
+    type: text

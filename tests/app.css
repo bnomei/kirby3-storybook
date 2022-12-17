@@ -1,0 +1,22 @@
+body {
+  background: white;
+}
+
+h1, h2 {
+  color: #FF4785;
+}
+
+hr {
+  border-color: #FF4785;
+}
+
+blockquote {
+  margin: 0;
+  padding: 1rem;
+  border-left: 1px dashed #FF4785;
+  border-right: 1px dashed #FF4785;
+}
+
+blockquote cite {
+  color: #FF4785;
+}

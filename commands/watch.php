@@ -8,7 +8,6 @@ if (!class_exists('Bnomei\Storybook')) {
 
 use Bnomei\Storybook;
 use Kirby\CLI\CLI;
-use Kirby\Filesystem\F;
 
 return [
     'description' => 'Watch Snippet and Template files for changes and generate Storybook files',
@@ -17,7 +16,7 @@ return [
             'prefix'       => 'i',
             'longPrefix'   => 'interval',
             'description'  => 'Duration in milliseconds between file watcher checks',
-            'defaultValue' => 1000,
+            'defaultValue' => 10000,
             'castTo'       => 'int',
         ],
     ],
@@ -26,26 +25,30 @@ return [
 
         while (true) {
             $storybook = Storybook::singleton();
-            $lastFile = '';
-            try {
-                foreach($storybook->snippets() as $key => $filepath) {
-                    $lastFile = $filepath;
+
+            foreach ($storybook->snippets() as $key => $filepath) {
+                try {
                     $storybook->generateStorybookFiles('snippets', $key, $filepath);
-                }
-                foreach($storybook->templates() as $key => $filepath) {
-                    $lastFile = $filepath;
-                    $storybook->generateStorybookFiles('templates', $key, $filepath);
-                }
-            } catch (Exception $exception) {
-                // this will complain about every file not working with storybook
-                // on every iteration of the file watcher
-                if(option('bnomei.watcher.errors')) {
-                    defined('STDOUT') && $cli->red($lastFile);
-                    defined('STDOUT') && $cli->out($exception->getMessage());
+                } catch (Exception $exception) {
+                    if (option('bnomei.storybook.errors')) {
+                        defined('STDOUT') && $cli->red($filepath);
+                        defined('STDOUT') && $cli->out($exception->getMessage());
+                    }
                 }
             }
 
-            usleep($cli->arg('interval'));
+            foreach ($storybook->templates() as $key => $filepath) {
+                try {
+                    $storybook->generateStorybookFiles('templates', $key, $filepath);
+                } catch (Exception $exception) {
+                    if (option('bnomei.storybook.watcher.errors')) {
+                        defined('STDOUT') && $cli->red($filepath);
+                        defined('STDOUT') && $cli->out($exception->getMessage());
+                    }
+                }
+            }
+
+            usleep($cli->arg('interval') * 1000);
         }
     }
 ];
