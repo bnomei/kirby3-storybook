@@ -1,0 +1,28 @@
+{
+  "name": "tests",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@storybook/addon-essentials": "^7.0.0-beta.12",
+    "@storybook/addon-interactions": "^7.0.0-beta.12",
+    "@storybook/addon-links": "^7.0.0-beta.12",
+    "@storybook/blocks": "^7.0.0-beta.12",
+    "@storybook/testing-library": "^0.0.13",
+    "@storybook/vue3": "^7.0.0-beta.12",
+    "@storybook/vue3-webpack5": "^7.0.0-beta.12",
+    "@vue/compiler-sfc": "^3.2.45",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "storybook": "^7.0.0-beta.12",
+    "vue-loader": "^17.0.1",
+    "webpack": "^5.75.0"
+  }
+}

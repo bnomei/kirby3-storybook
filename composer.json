@@ -1,0 +1,75 @@
+{
+    "name": "bnomei/kirby3-janitor",
+    "type": "kirby-plugin",
+    "version": "1.0.0",
+    "license": "MIT",
+    "description": "Kirby 3 Plugin to render Layouts and Snippets with Storybook.js",
+    "authors": [
+        {
+            "name": "Bruno Meilick",
+            "email": "b@bnomei.com"
+        }
+    ],
+    "keywords": [
+        "kirby3",
+        "kirby3-cms",
+        "kirby3-plugin",
+        "storybook",
+        "filewatcher",
+        "layout",
+        "snippet",
+        "slot",
+        "component"
+    ],
+    "autoload": {
+        "psr-4": {
+            "Bnomei\\": "classes/"
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true,
+        "allow-plugins": {
+            "getkirby/composer-installer": true
+        }
+    },
+    "require": {
+        "php": ">=8.0",
+        "getkirby/composer-installer": "^1.2",
+        "symfony/deprecation-contracts": "^3.0.1",
+        "symfony/finder": "^6.0"
+    },
+    "require-dev": {
+        "getkirby/cli": "^1.1.0",
+        "getkirby/cms": "^3.9.0-rc.1",
+        "getkirby/kql": "^2.0.0",
+        "php-coveralls/php-coveralls": "^2.4",
+        "phpunit/phpunit": "^9.5"
+    },
+    "scripts": {
+        "build": [
+            "yarn",
+            "yarn run build"
+        ],
+        "analyze": "phpstan analyse classes",
+        "fix": "php-cs-fixer fix",
+        "test": [
+            "mkdir -p tests/logs",
+            "@putenv XDEBUG_MODE=coverage",
+            "phpunit --configuration ./phpunit.xml"
+        ],
+        "dist": [
+            "composer install --no-dev --optimize-autoloader",
+            "git rm -rf --cached .; git add .;"
+        ],
+        "kirby": [
+            "composer install",
+            "composer update",
+            "composer install --working-dir=tests/kirby --no-dev --optimize-autoloader",
+            "composer update --working-dir=tests/kirby"
+        ]
+    },
+    "extra": {
+        "kirby-cms-path": "tests/kirby"
+    }
+}
