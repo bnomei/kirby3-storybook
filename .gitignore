@@ -11,7 +11,7 @@ node_modules
 /tests/site/accounts
 /tests/site/cache
 /tests/site/sessions
-/tests/janitor-*.php
+/tests/site/plugins/kql
 
 # files of Composer dependencies that are not needed for the plugin
 /vendor/**/.*

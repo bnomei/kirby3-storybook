@@ -1,0 +1,8 @@
+{
+  "query": "site.find('home')",
+  "select": {
+    "title": true,
+    "url": true,
+    "date": "page.modified"
+  }
+}

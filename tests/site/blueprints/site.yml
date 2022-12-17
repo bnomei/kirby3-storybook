@@ -1,3 +1,9 @@
 sections:
   pages:
     type: pages
+
+  fields:
+    type: fields
+    fields:
+      title:
+        type: text

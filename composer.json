@@ -42,7 +42,6 @@
     "require-dev": {
         "getkirby/cli": "^1.1.0",
         "getkirby/cms": "^3.9.0-rc.1",
-        "getkirby/kql": "^2.0.0",
         "php-coveralls/php-coveralls": "^2.4",
         "phpunit/phpunit": "^9.5"
     },

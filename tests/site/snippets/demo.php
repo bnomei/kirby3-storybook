@@ -1,7 +1,3 @@
-<?php extract(storybook([
-    'date' => date('c'),
-]));
-
-?>
+<?php extract(storybook());?>
 
 <div>Kirby Snippets in Storybook at <?= $date ?></div>
