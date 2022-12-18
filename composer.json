@@ -3,7 +3,7 @@
     "type": "kirby-plugin",
     "version": "1.0.0",
     "license": "MIT",
-    "description": "Kirby 3 Plugin to render Layouts and Snippets with Storybook.js",
+    "description": "Kirby 3 Plugin to generate Storybook stories from snippets and templates",
     "authors": [
         {
             "name": "Bruno Meilick",
@@ -16,10 +16,14 @@
         "kirby3-plugin",
         "storybook",
         "filewatcher",
-        "layout",
+        "template",
         "snippet",
+        "slots",
         "slot",
-        "component"
+        "vue",
+        "vue3",
+        "component",
+        "component-based"
     ],
     "autoload": {
         "psr-4": {
