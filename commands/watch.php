@@ -16,13 +16,13 @@ return [
             'prefix'       => 'i',
             'longPrefix'   => 'interval',
             'description'  => 'Duration in milliseconds between file watcher checks',
-            'defaultValue' => 10000,
+            'defaultValue' => 1000,
             'castTo'       => 'int',
         ],
         'pattern' => [
             'prefix'       => 'p',
             'longPrefix'   => 'pattern',
-            'description'  => 'File name regex pattern, like \'/.*article.php/\'',
+            'description'  => 'File name regex pattern, like \'/.*article.php/\' or exact match like \'article\'',
             'castTo'       => 'string',
         ],
         'once' => [
@@ -41,19 +41,18 @@ return [
 
         $root = $cli->kirby()->root();
         $pattern = $cli->arg('pattern');
+        $storybook = Storybook::singleton([
+            'cli' => true, // enforce cli mode even if called from janitor
+            'watcher_errors' => $cli->arg('errors'),
+        ]);
 
         while (true) {
-            $storybook = Storybook::singleton([
-                'cli' => true, // enforce cli mode even if called from janitor
-                'watcher_errors' => $cli->arg('errors'),
-            ]);
-
             $time = time();
             $updated = 0;
             $count = 0;
 
             foreach ($storybook->snippets() as $key => $filepath) {
-                if($pattern && preg_match($pattern, $filepath) !== 1) {
+                if ($storybook->pattern($filepath, $pattern) === false) {
                     continue;
                 }
                 $count++;
@@ -71,7 +70,7 @@ return [
             }
 
             foreach ($storybook->templates() as $key => $filepath) {
-                if($pattern && preg_match($pattern, $filepath) !== 1) {
+                if ($storybook->pattern($filepath, $pattern) === false) {
                     continue;
                 }
                 $count++;

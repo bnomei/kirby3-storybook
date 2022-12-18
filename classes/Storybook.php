@@ -223,24 +223,6 @@ export const $rootUCSingular = {
         return true;
     }
 
-    public function modified(string $filepath): bool
-    {
-        return true;
-    }
-
-    private static $singleton;
-
-    public static function singleton(array $options = []): Storybook
-    {
-        if (self::$singleton) {
-            return self::$singleton;
-        }
-
-        self::$singleton = new Storybook($options);
-
-        return self::$singleton;
-    }
-
     private function snippetFileFromName(string $name): ?string
     {
         $kirby = App::instance();
@@ -260,5 +242,54 @@ export const $rootUCSingular = {
         }
 
         return null;
+    }
+
+    public function pattern(string $filepath, ?string $pattern): bool
+    {
+        if (!$pattern || empty($pattern)) {
+            return true;
+        }
+
+        if (Str::startsWith($pattern, '/') && Str::endsWith($pattern, '/')) {
+            return preg_match($pattern, $filepath) !== 1;
+        }
+
+        return Str::contains($filepath, $pattern);
+    }
+
+    private static array $checksums = [];
+    public function modified(string $filepath): bool
+    {
+        // check source file and story files in yml and json
+        $checksum = F::exists($filepath) ? strval(F::modified($filepath)) : '_';
+        $filePrefix = str_replace('.' . F::extension($filepath), '', $filepath);
+        if (F::exists($filePrefix . '.stories.yml')) {
+            $checksum .= F::exists($filePrefix . '.stories.yml') ? F::modified($filePrefix . '.stories.yml') : '_';
+        }
+        if (F::exists($filePrefix . '.stories.json')) {
+            $checksum .= F::exists($filePrefix . '.stories.json') ? F::modified($filePrefix . '.stories.json') : '_';
+        }
+
+        $checksum = md5($checksum);
+        $old = A::get(Storybook::$checksums, $filepath);
+        if ($old && $old === $checksum) {
+            return false;
+        }
+
+        Storybook::$checksums[$filepath] = $checksum;
+        return true;
+    }
+
+    private static $singleton;
+
+    public static function singleton(array $options = []): Storybook
+    {
+        if (self::$singleton) {
+            return self::$singleton;
+        }
+
+        self::$singleton = new Storybook($options);
+
+        return self::$singleton;
     }
 }

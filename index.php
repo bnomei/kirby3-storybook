@@ -27,7 +27,7 @@ Kirby::plugin('bnomei/storybook', [
         'snippet' => function (\Kirby\Cms\App $kirby, $name, array $data = [], bool $slots = false) {
             // support other plugins if installed
             // https://github.com/lukaskleinschmidt/kirby-snippet-controller
-            if(function_exists('snippet_controller')) {
+            if (function_exists('snippet_controller')) {
                 $data = snippet_controller($name, $data);
             }
 
@@ -79,7 +79,7 @@ if (!function_exists('storybook_slots')) {
         }
         $snippet = new \Kirby\Template\Snippet($file);
         $slots = [];
-        foreach($content as $key => $value) {
+        foreach ($content as $key => $value) {
             $slots[$key] = new \Kirby\Template\Slot($snippet, $key, $value);
         }
 
