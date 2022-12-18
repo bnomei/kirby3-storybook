@@ -23,6 +23,28 @@ Kirby::plugin('bnomei/storybook', [
     'commands' => [ // https://github.com/getkirby/cli
         'storybook:watch' => require __DIR__ . '/commands/watch.php',
     ],
+    'components' => [
+        'snippet' => function (\Kirby\Cms\App $kirby, $name, array $data = [], bool $slots = false) {
+            // support other plugins if installed
+            // https://github.com/lukaskleinschmidt/kirby-snippet-controller
+            if(function_exists('snippet_controller')) {
+                $data = snippet_controller($name, $data);
+            }
+
+            // merge data with...
+            $data = \Bnomei\Storybook::singleton()->loadData(
+                $data,
+                $name
+            );
+
+            return $kirby->core()->components()['snippet'](
+                $kirby,
+                $name,
+                $data,
+                $slots,
+            );
+        }
+    ],
 ]);
 
 if (!class_exists('Bnomei\Storybook')) {

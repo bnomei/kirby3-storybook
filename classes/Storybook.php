@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Bnomei;
 
+use Kirby\Cms\App;
 use Kirby\Cms\Page;
 use Kirby\Data\Json;
 use Kirby\Data\Yaml;
@@ -59,9 +60,14 @@ final class Storybook
 
     public function loadData(array $data, string $filepath): array
     {
-        // load data here and NOT via a custom snippet controller so
-        // this plugin can be used together with other custom snippet controllers
-        // like https://github.com/lukaskleinschmidt/kirby-snippet-controller
+        // if filepath is not a path but just the name try to find the file
+        if (!F::exists($filepath)) {
+            $filepath = $this->snippetFileFromName($filepath);
+            if (!$filepath) {
+                return [];
+            }
+        }
+
         $filePrefix = str_replace('.' . F::extension($filepath), '', $filepath);
         if ($this->option('stories_yml') && empty($csf) && F::exists($filePrefix . '.stories.yml')) {
             $data = Yaml::read($filePrefix . '.stories.yml');
@@ -218,5 +224,26 @@ export const $rootUCSingular = {
         self::$singleton = new Storybook($options);
 
         return self::$singleton;
+    }
+
+    private function snippetFileFromName(string $name): ?string
+    {
+        $kirby = App::instance();
+        $names = A::wrap($name);
+        $root = $kirby->root('snippets');
+
+        foreach ($names as $name) {
+            $file = $root . '/' . $name . '.php';
+
+            if (file_exists($file) === false) {
+                $file = $kirby->extensions('snippets')[$name] ?? null;
+            }
+
+            if ($file) {
+                return F::exists($file) ? $file : null;
+            }
+        }
+
+        return null;
     }
 }
