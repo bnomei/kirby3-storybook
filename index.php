@@ -60,3 +60,29 @@ if (!function_exists('storybook')) {
         return \Bnomei\Storybook::singleton()->csf($csf, $filepath);
     }
 }
+
+if (!function_exists('storybook_block')) {
+    function storybook_block(string $type, array $content = []): \Kirby\Cms\Block
+    {
+        return new \Kirby\Cms\Block([
+            'type' => $type,
+            'content' => $content,
+        ]);
+    }
+}
+
+if (!function_exists('storybook_slots')) {
+    function storybook_slots(array $content = [], ?string $file = null): \Kirby\Template\Slots
+    {
+        if (!$file) {
+            $file = \Kirby\Toolkit\Str::random(5) . '.php';
+        }
+        $snippet = new \Kirby\Template\Snippet($file);
+        $slots = [];
+        foreach($content as $key => $value) {
+            $slots[$key] = new \Kirby\Template\Slot($snippet, $key, $value);
+        }
+
+        return new \Kirby\Template\Slots($snippet, $slots);
+    }
+}

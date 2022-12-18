@@ -1,0 +1,1 @@
+<template src="./Article.html"></template>

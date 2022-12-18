@@ -76,6 +76,21 @@ final class Storybook
             $data = \Kirby\Kql\Kql::run(Json::read($filePrefix . '.stories.json'));
         }
 
+        // transform block and slots
+        if ($block = A::get($data, 'block')) {
+            if (is_array($block)) {
+                $data['block'] = storybook_block(
+                    A::get($block, 'type'),
+                    A::get($block, 'content', [])
+                );
+            }
+        }
+        if ($slots = A::get($data, 'slots')) {
+            if (is_array($slots)) {
+                $data['slots'] = storybook_slots($slots);
+            }
+        }
+
         return $data;
     }
 
