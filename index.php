@@ -32,10 +32,13 @@ Kirby::plugin('bnomei/storybook', [
             }
 
             // merge data with...
-            $data = \Bnomei\Storybook::singleton()->loadData(
-                $data,
-                $name
-            );
+            $storybook = \Bnomei\Storybook::singleton();
+            if ($storybook->option('cli')) {
+                $data = $storybook->loadData(
+                    $data,
+                    $name
+                );
+            }
 
             return $kirby->core()->components()['snippet'](
                 $kirby,
