@@ -10,3 +10,5 @@
 /.gitignore         export-ignore
 /.travis.yml        export-ignore
 /phpunit.xml        export-ignore
+/screenshot.jpg     export-ignore
+/screenshot.png     export-ignore

@@ -9,6 +9,8 @@
 
 Kirby 3 Plugin to generate Storybook stories from snippets and templates.
 
+![screenshot](https://raw.githubusercontent.com/bnomei/kirby3-storybook/main/screenshot.png)
+
 ## Commercial Usage
 
 > <br>
