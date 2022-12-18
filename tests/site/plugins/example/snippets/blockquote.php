@@ -1,4 +1,4 @@
-<?php extract(storybook()); ?>
+<?php extract(storybook(), EXTR_SKIP); ?>
 
 <blockquote>
     <?= $blockquote ?>

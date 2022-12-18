@@ -25,7 +25,7 @@ final class Storybook
             'storybook_folder' => option('bnomei.storybook.folder'),
             'stories_json' => option('bnomei.storybook.stories.json'),
             'stories_yml' => option('bnomei.storybook.stories.yml'),
-            'watcher_errors' => option('bnomei.storybook.watcher.errors'),
+            'watcher_errors' => option('debug'),
         ];
         $this->options = array_merge($defaults, $options);
 
@@ -146,8 +146,14 @@ final class Storybook
 
         // html
         $html = "$outputFolder/$root/$base/$local.html";
+        $out = null;
         if ($root === 'snippets') {
-            $out = snippet($key, return: true);
+            try {
+                $out = snippet($key, return: true);
+            } catch (\Exception $ex) {
+                // forward exception
+                throw new \Exception($ex->getMessage());
+            }
         } elseif ($root === 'templates' && F::exists($templatePageConfig)) {
             $data = $this->loadData([], $filepath);
             if ($id = A::get($data, 'id')) {
@@ -155,6 +161,16 @@ final class Storybook
                     $out = $page->render(A::get($data, 'data', []));
                 }
             }
+            if ($virtual = A::get($data, 'virtual')) {
+                $virtual['parent'] = A::get($virtual, 'parent') ? page(A::get($virtual, 'parent')) : null;
+                $page = Page::factory($virtual);
+                if ($page) {
+                    $out = $page->render(A::get($virtual, 'data', []));
+                }
+            }
+        }
+        if (!$out) {
+            throw new \Exception("Rendering of HTML failed. Check if you have all variables defined or link to existing IDs.");
         }
         F::write($html, $out);
 
@@ -183,6 +199,11 @@ export const $rootUCSingular = {
             );
         }
 
+        return true;
+    }
+
+    public function modified(string $filepath): bool
+    {
         return true;
     }
 

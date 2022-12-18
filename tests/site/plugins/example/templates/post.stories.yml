@@ -1,1 +1,10 @@
-id: blog/world
+virtual:
+  slug: virt
+  parent: blog
+  template: post
+  model: post
+  content:
+    title: Virtual Post
+    blockquote: A quote
+    cite: me
+

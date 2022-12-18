@@ -6,6 +6,6 @@ extract(storybook([
             'text' => 'Illo rerum cupiditate'
         ],
     ]),
-])); ?>
+]), EXTR_SKIP); ?>
 
 <<?= $level = $block->level()->or('h2') ?>><?= $block->text() ?></<?= $level ?>>

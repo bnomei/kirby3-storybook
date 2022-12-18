@@ -19,9 +19,6 @@ Kirby::plugin('bnomei/storybook', [
             'json' => fn () => class_exists('Kirby\Kql\Kql'),
             'yml' => true,
         ],
-        'watcher' => [
-            'errors' => false,
-        ]
     ],
     'commands' => [ // https://github.com/getkirby/cli
         'storybook:watch' => require __DIR__ . '/commands/watch.php',
