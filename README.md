@@ -101,7 +101,7 @@ kirby storybook:watch --help
 kirby storybook:watch --errors --once
 kirby storybook:watch --interval 5000
 kirby storybook:watch --pattern article
-kirby storybook:watch --pattern '/*.blocks\/*./'
+kirby storybook:watch --pattern '/.*blocks\/.*/'
 ```
 
 ### Generated Files
