@@ -1,6 +1,6 @@
 <?php return array(
     'root' => array(
-        'name' => 'bnomei/kirby3-janitor',
+        'name' => 'bnomei/kirby3-storybook',
         'pretty_version' => '1.0.0',
         'version' => '1.0.0.0',
         'reference' => NULL,
@@ -10,7 +10,7 @@
         'dev' => false,
     ),
     'versions' => array(
-        'bnomei/kirby3-janitor' => array(
+        'bnomei/kirby3-storybook' => array(
             'pretty_version' => '1.0.0',
             'version' => '1.0.0.0',
             'reference' => NULL,
