@@ -120,6 +120,7 @@ The plugin will use the file watcher to monitor your Snippet/Template files and 
 | folder            | `callback` | logic to find you Storybook stories folder, adjust if needed |
 | stories.json      | `callback` | if KQL exists allow loading from json files                  |
 | stories.yml       | `true`     | allow loading from yml files                                 |
+| stories.ignore    | `[]`       | array of string, if matches any file will not be rendered    |
 
 
 ## Dependencies

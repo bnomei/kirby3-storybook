@@ -26,6 +26,7 @@ final class Storybook
             'storybook_folder' => option('bnomei.storybook.folder'),
             'stories_json' => option('bnomei.storybook.stories.json'),
             'stories_yml' => option('bnomei.storybook.stories.yml'),
+            'stories_ignore' => option('bnomei.storybook.stories.ignore'),
             'watcher_errors' => option('debug'),
         ];
         $this->options = array_merge($defaults, $options);
@@ -140,6 +141,21 @@ final class Storybook
             kirby()->extensions($extension),
             $dynFromExtensionFolders
         );
+        
+        // remove all that match an ignore pattern
+        $ignores = array_merge([
+            'kirby/config/templates/',
+            'kirby/config/blocks/',
+        ], $this->option('stories_ignore')
+        );
+        $files = array_filter($files, function ($filepath) use ($ignores) {
+            foreach ($ignores as $ignore) {
+                if (Str::contains($filepath, $ignore)) {
+                    return false;
+                }
+            }
+            return true;
+        });
 
         // remove all files that do not exist then return
         return array_filter($files, fn ($filepath) => F::exists($filepath));
@@ -148,7 +164,7 @@ final class Storybook
     public function generateStorybookFiles(string $root, string $key, string $filepath): bool
     {
         $outputFolder = $this->option('storybook_folder');
-        if (!Dir::exists($outputFolder)) {
+        if (empty($outputFolder) || !Dir::exists($outputFolder)) {
             throw new \Exception('Storybook folder was not found.');
         }
         if (!F::exists($filepath)) {
@@ -190,7 +206,7 @@ final class Storybook
                 }
             }
         }
-        if (!$out) {
+        if ($out === null) { // out empty would be allowed for snippets without content
             throw new \Exception("Rendering of HTML failed. Check if you have all variables defined or link to existing IDs.");
         }
         F::write($html, $out);

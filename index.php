@@ -6,6 +6,15 @@ Kirby::plugin('bnomei/storybook', [
     'options' => [
         'cli' => fn () => php_sapi_name() === 'cli',
         'folder' => function (): ?string {
+            foreach([
+                        kirby()->root('index') . '/stories',
+                        kirby()->root('index') . '/../stories'
+                    ] as $dir) {
+                if (Dir::exists($dir)) {
+                    return $dir;
+                }
+            }
+            
             $finder = new \Symfony\Component\Finder\Finder();
             $finder->files()->in(kirby()->root('index'))
                 ->notPath('/.*node_modules.*/')
@@ -18,6 +27,7 @@ Kirby::plugin('bnomei/storybook', [
         'stories' => [
             'json' => fn () => class_exists('Kirby\Kql\Kql'),
             'yml' => true,
+            'ignore' => [],
         ],
     ],
     'commands' => [ // https://github.com/getkirby/cli
