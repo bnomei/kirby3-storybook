@@ -110,9 +110,7 @@ The plugin will use the file watcher to monitor your Snippet/Template files and 
 
 - `Example.html` contains the rendered HTML and will be **overwritten on changes** to the source files.
 - `Example.stories.js` defines details about your story for Storybook, like title or variants. It will only be created if missing. You can edit it as you like.
-- `Example.vue` standard Vue SFC. It references to the HTML file. This file allows you to add custom js/css or when the source is finalized remove the reference, copy the HTML into the vue-file and add support for variants etc.  For each of these files you need to add the reference your css file manually like with `<style src="./../../app.css"></style>`.
-
-> TIP: You can use a symlink to make the paths to your assets a bit more readable. Call something like this in your index.php once `symlink(__DIR__ . '/assets/', __DIR__ . '/stories/assets');`
+- `Example.vue` standard Vue SFC. It references to the HTML file. This file allows you to add custom js/css or when the source is finalized remove the reference, copy the HTML into the vue-file and add support for variants etc.  For each of these files you need to add the reference your css file manually like with `<style src="./../../app.css"></style>` or you can use a symlink to make the paths to your assets match the assets forlder that storybook expects and autoloads. Call something like this in your index.php once `symlink(__DIR__ . '/assets/', __DIR__ . '/stories/assets');`
 
 ## Settings
 
