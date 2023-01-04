@@ -71,10 +71,10 @@ final class Storybook
 
         $filePrefix = str_replace('.' . F::extension($filepath), '', $filepath);
         if ($this->option('stories_yml') && empty($csf) && F::exists($filePrefix . '.stories.yml')) {
-            $data = Yaml::read($filePrefix . '.stories.yml');
+            $data = array_merge(Yaml::read($filePrefix . '.stories.yml'), $data);
         }
         if ($this->option('stories_json') && empty($csf) && F::exists($filePrefix . '.stories.json')) {
-            $data = \Kirby\Kql\Kql::run(Json::read($filePrefix . '.stories.json'));
+            $data = array_merge(\Kirby\Kql\Kql::run(Json::read($filePrefix . '.stories.json')), $data);
         }
 
         // transform block and slots
