@@ -114,15 +114,12 @@ The plugin will use the file watcher to monitor your Snippet/Template files and 
 
 #### Adding your CSS and JS assets
 
-You could add the reference your a single css file manually with `<style src="./../../app.css"></style>` and import all your scripts to each vue SFC. But my suggested method [out of 6](https://betterprogramming.pub/6-ways-to-configure-global-styles-for-storybook-faa1517aaf1a) would be to import your assets in the `./storybook/preview.js` that storybook created. See example below:
+You could add the reference your a single css file manually with `<style src="./../../app.css"></style>` and import all your scripts to each vue SFC. But my suggested method [out of 6](https://betterprogramming.pub/6-ways-to-configure-global-styles-for-storybook-faa1517aaf1a) would be to import your assets in the `./storybook/preview.js` and/or `.storybook/main.js` that storybook created. See example below:
 
 **./storybook/preview.js**
 ```diff
 + import './../assets/css/app.css'
-+ import './../assets/css/splide.min.css'
 + import "./../assets/js/alpine.min"
-+ import "./../assets/js/splide.min"
-+ import "./../assets/js/loadeer.min"
 
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },
@@ -133,6 +130,19 @@ export const parameters = {
     },
   },
 }
+```
+
+**./storybook/main.js**
+```diff
+  ...
+  "docs": {
+    "docsPage": true
+  },
++  "previewHead": (head) => (`
++    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css" />
++    <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
++    ${head}
+  `),
 ```
 
 ## Settings
