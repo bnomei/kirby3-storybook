@@ -90,12 +90,11 @@ if (!function_exists('storybook_slots')) {
         if (!$file) {
             $file = \Kirby\Toolkit\Str::random(5) . '.php';
         }
-        $snippet = new \Kirby\Template\Snippet($file);
         $slots = [];
         foreach ($content as $key => $value) {
-            $slots[$key] = new \Kirby\Template\Slot($snippet, $key, $value);
+            $slots[$key] = new \Kirby\Template\Slot($file, $key, $value);
         }
 
-        return new \Kirby\Template\Slots($snippet, $slots);
+        return new \Kirby\Template\Slots($slots);
     }
 }
