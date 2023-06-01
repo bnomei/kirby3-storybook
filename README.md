@@ -44,10 +44,10 @@ You need to install the CLI with composer since this plugin depends on the CLI t
 Please refer to the [official docs](https://storybook.js.org/docs/7.0/vue/get-started/install) on how to install Storybook if in doubt.
 
 ```bash
-npm install storybook webpack --sav-dev
+npm install storybook --sav-dev
 ```
 
-> TIP: I used storybook@^7.0.0-beta.12 and webpack@^5.x.x for my tests.
+> TIP: I used storybook@^7.0.0-beta.12 for my tests.
 
 ```bash
 npx storybook init --type vue3
