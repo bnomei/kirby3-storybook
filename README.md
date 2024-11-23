@@ -1,4 +1,4 @@
-# Kirby 3 Storybook
+# Kirby Storybook
 
 ![Release](https://flat.badgen.net/packagist/v/bnomei/kirby3-storybook?color=ae81ff)
 ![Downloads](https://flat.badgen.net/packagist/dt/bnomei/kirby3-storybook?color=272822)
@@ -7,24 +7,9 @@
 [![Maintainability](https://flat.badgen.net/codeclimate/maintainability/bnomei/kirby3-storybook)](https://codeclimate.com/github/bnomei/kirby3-storybook)
 [![Twitter](https://flat.badgen.net/badge/twitter/bnomei?color=66d9ef)](https://twitter.com/bnomei)
 
-Kirby 3 Plugin to generate Storybook stories from snippets and templates.
+Kirby Plugin to generate Storybook stories from snippets and templates.
 
 ![screenshot](https://raw.githubusercontent.com/bnomei/kirby3-storybook/main/screenshot.png)
-
-## Commercial Usage
-
-> <br>
-> <b>Support open source!</b><br><br>
-> This plugin is free but if you use it in a commercial project please consider to sponsor me or make a donation.<br>
-> If my work helped you to make some cash it seems fair to me that I might get a little reward as well, right?<br><br>
-> Be kind. Share a little. Thanks.<br><br>
-> &dash; Bruno<br>
-> &nbsp;
-
-| M | O | N | E | Y |
-|---|----|---|---|---|
-| [Github sponsor](https://github.com/sponsors/bnomei) | [Patreon](https://patreon.com/bnomei) | [Buy Me a Coffee](https://buymeacoff.ee/bnomei) | [Paypal dontation](https://www.paypal.me/bnomei/15) | [Hire me](mailto:b@bnomei.com?subject=Kirby) |
-
 
 ## Install
 
@@ -110,7 +95,7 @@ The plugin will use the file watcher to monitor your Snippet/Template files and 
 
 - `Example.html` contains the rendered HTML and will be **overwritten on changes** to the source files.
 - `Example.stories.js` defines details about your story for Storybook, like title or variants. It will only be created if missing. You can edit it as you like.
-- `Example.vue` standard Vue SFC. It references to the HTML file. This file allows you to add custom js/css or when the source is finalized remove the reference, copy the HTML into the vue-file and add support for variants etc. 
+- `Example.vue` standard Vue SFC. It references to the HTML file. This file allows you to add custom js/css or when the source is finalized remove the reference, copy the HTML into the vue-file and add support for variants etc.
 
 #### Adding your CSS and JS assets
 
