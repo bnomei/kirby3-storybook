@@ -49,7 +49,7 @@ final class Storybook
 
     public function csf(array $csf, string $filepath): array
     {
-        if (!\Bnomei\Storybook::singleton()->option('cli')) {
+        if (! \Bnomei\Storybook::singleton()->option('cli')) {
             return [];
         }
 
@@ -62,19 +62,19 @@ final class Storybook
     public function loadData(array $data, string $filepath): array
     {
         // if filepath is not a path but just the name try to find the file
-        if (!F::exists($filepath)) {
+        if (! F::exists($filepath)) {
             $filepath = $this->snippetFileFromName($filepath);
-            if (!$filepath) {
+            if (! $filepath) {
                 return [];
             }
         }
 
-        $filePrefix = str_replace('.' . F::extension($filepath), '', $filepath);
-        if ($this->option('stories_yml') && empty($csf) && F::exists($filePrefix . '.stories.yml')) {
-            $data = array_merge(Yaml::read($filePrefix . '.stories.yml'), $data);
+        $filePrefix = str_replace('.'.F::extension($filepath), '', $filepath);
+        if ($this->option('stories_yml') && empty($csf) && F::exists($filePrefix.'.stories.yml')) {
+            $data = array_merge(Yaml::read($filePrefix.'.stories.yml'), $data);
         }
-        if ($this->option('stories_json') && empty($csf) && F::exists($filePrefix . '.stories.json')) {
-            $data = array_merge(\Kirby\Kql\Kql::run(Json::read($filePrefix . '.stories.json')), $data);
+        if ($this->option('stories_json') && empty($csf) && F::exists($filePrefix.'.stories.json')) {
+            $data = array_merge(\Kirby\Kql\Kql::run(Json::read($filePrefix.'.stories.json')), $data);
         }
 
         // transform block and slots
@@ -86,10 +86,19 @@ final class Storybook
                 );
             }
         }
+        // Passing the $slot or $slots variables to snippets is not supported.
+        /*
         if ($slots = A::get($data, 'slots')) {
             if (is_array($slots)) {
                 $data['slots'] = storybook_slots($slots);
             }
+        }
+        */
+        if (array_key_exists('slot', $data)) {
+            unset($data['slot']);
+        }
+        if (array_key_exists('slots', $data)) {
+            unset($data['slots']);
         }
 
         return $data;
@@ -108,7 +117,7 @@ final class Storybook
     private function findPHPFiles(string $extension): array
     {
         $inRoot = [];
-        $finder = new Finder();
+        $finder = new Finder;
         $finder->files()->in(kirby()->root($extension))->name('*.php');
         foreach ($finder as $file) {
             $inRoot[str_replace('.php', '', $file->getRelativePathname())] = $file->getRealPath();
@@ -117,7 +126,7 @@ final class Storybook
         // since watcher does not get a clean kirby instance but keeps the same while running
         // add as many dynamic as possible. might break if naming is inconsistent between register and filepath.
         $extensionFolders = array_unique(array_map(
-            fn ($filepath) => explode('/snippets/', $filepath)[0] . '/snippets/',
+            fn ($filepath) => explode('/snippets/', $filepath)[0].'/snippets/',
             array_filter(
                 kirby()->extensions($extension),
                 fn ($filepath) => Str::contains($filepath, '/snippets/')
@@ -125,11 +134,11 @@ final class Storybook
         ));
         $dynFromExtensionFolders = [];
         foreach ($extensionFolders as $dir) {
-            if (!Dir::exists($dir)) {
+            if (! Dir::exists($dir)) {
                 continue;
             }
 
-            $finder = new Finder();
+            $finder = new Finder;
             $finder->files()->in($dir)->name('*.php');
             foreach ($finder as $file) {
                 $dynFromExtensionFolders[str_replace('.php', '', $file->getRelativePathname())] = $file->getRealPath();
@@ -141,7 +150,7 @@ final class Storybook
             kirby()->extensions($extension),
             $dynFromExtensionFolders
         );
-        
+
         // remove all that match an ignore pattern
         $ignores = array_merge([
             'kirby/config/templates/',
@@ -154,6 +163,7 @@ final class Storybook
                     return false;
                 }
             }
+
             return true;
         });
 
@@ -164,10 +174,10 @@ final class Storybook
     public function generateStorybookFiles(string $root, string $key, string $filepath): bool
     {
         $outputFolder = $this->option('storybook_folder');
-        if (empty($outputFolder) || !Dir::exists($outputFolder)) {
+        if (empty($outputFolder) || ! Dir::exists($outputFolder)) {
             throw new \Exception('Storybook folder was not found.');
         }
-        if (!F::exists($filepath)) {
+        if (! F::exists($filepath)) {
             throw new \Exception("File `$filepath` was not found.");
         }
 
@@ -175,7 +185,7 @@ final class Storybook
         $rootUC = ucfirst($root);
         $rootUCSingular = substr($rootUC, 0, strlen($rootUC) - 1);
         $keyUC = implode('/', array_map('ucfirst', $fileParts));
-        $title = $rootUC . '/' . $keyUC;
+        $title = $rootUC.'/'.$keyUC;
         $camel = ucfirst(Str::camel(str_replace('/', ' ', $key)));
         $local = ucfirst(array_pop($fileParts));
         $base = implode('/', $fileParts);
@@ -207,19 +217,19 @@ final class Storybook
             }
         }
         if ($out === null) { // out empty would be allowed for snippets without content
-            throw new \Exception("Rendering of HTML failed. Check if you have all variables defined or link to existing IDs.");
+            throw new \Exception('Rendering of HTML failed. Check if you have all variables defined or link to existing IDs.');
         }
         F::write($html, $out);
 
         // vue, but do not overwrite existing
         $vue = "$outputFolder/$root/$base/$local.vue";
-        if (!F::exists($vue)) {
-            F::write($vue, '<template src="./' . $local . '.html"></template>');
+        if (! F::exists($vue)) {
+            F::write($vue, '<template src="./'.$local.'.html"></template>');
         }
 
         // stories.js, but do not overwrite existing
         $js = "$outputFolder/$root/$base/$local.stories.js";
-        if (!F::exists($js)) {
+        if (! F::exists($js)) {
             F::write(
                 $js,
                 "import My$camel from './$local.vue';
@@ -246,7 +256,7 @@ export const $rootUCSingular = {
         $root = $kirby->root('snippets');
 
         foreach ($names as $name) {
-            $file = $root . '/' . $name . '.php';
+            $file = $root.'/'.$name.'.php';
 
             if (file_exists($file) === false) {
                 $file = $kirby->extensions('snippets')[$name] ?? null;
@@ -262,7 +272,7 @@ export const $rootUCSingular = {
 
     public function pattern(string $filepath, ?string $pattern): bool
     {
-        if (!$pattern || empty($pattern)) {
+        if (! $pattern || empty($pattern)) {
             return true;
         }
 
@@ -274,16 +284,17 @@ export const $rootUCSingular = {
     }
 
     private static array $checksums = [];
+
     public function modified(string $filepath): bool
     {
         // check source file and story files in yml and json
         $checksum = F::exists($filepath) ? strval(F::modified($filepath)) : '_';
-        $filePrefix = str_replace('.' . F::extension($filepath), '', $filepath);
-        if (F::exists($filePrefix . '.stories.yml')) {
-            $checksum .= F::exists($filePrefix . '.stories.yml') ? F::modified($filePrefix . '.stories.yml') : '_';
+        $filePrefix = str_replace('.'.F::extension($filepath), '', $filepath);
+        if (F::exists($filePrefix.'.stories.yml')) {
+            $checksum .= F::exists($filePrefix.'.stories.yml') ? F::modified($filePrefix.'.stories.yml') : '_';
         }
-        if (F::exists($filePrefix . '.stories.json')) {
-            $checksum .= F::exists($filePrefix . '.stories.json') ? F::modified($filePrefix . '.stories.json') : '_';
+        if (F::exists($filePrefix.'.stories.json')) {
+            $checksum .= F::exists($filePrefix.'.stories.json') ? F::modified($filePrefix.'.stories.json') : '_';
         }
 
         $checksum = md5($checksum);
@@ -293,6 +304,7 @@ export const $rootUCSingular = {
         }
 
         Storybook::$checksums[$filepath] = $checksum;
+
         return true;
     }
 

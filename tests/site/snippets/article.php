@@ -10,11 +10,11 @@ extract(storybook([
 ?>
 
 <article>
-    <?php if ($header = $slots->header()): ?>
+    <?php if ($header = $slots->header()) { ?>
         <header>
             <?= $header ?>
         </header>
-    <?php endif ?>
+    <?php } ?>
 
     <?= $slots->body() ?>
 </article>

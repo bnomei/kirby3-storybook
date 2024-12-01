@@ -1,3 +1,4 @@
+# Passing the $slot or $slots variables to snippets is not supported.
 slots:
   header: Head from yml
   body: Body from yml

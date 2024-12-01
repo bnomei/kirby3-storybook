@@ -1,27 +1,28 @@
 <?php
 
-@include_once __DIR__ . '/vendor/autoload.php';
+@include_once __DIR__.'/vendor/autoload.php';
 
 Kirby::plugin('bnomei/storybook', [
     'options' => [
         'cli' => fn () => php_sapi_name() === 'cli',
         'folder' => function (): ?string {
-            foreach([
-                        kirby()->root('index') . '/stories',
-                        kirby()->root('index') . '/../stories'
-                    ] as $dir) {
+            foreach ([
+                kirby()->root('index').'/stories',
+                kirby()->root('index').'/../stories',
+            ] as $dir) {
                 if (Dir::exists($dir)) {
                     return $dir;
                 }
             }
-            
-            $finder = new \Symfony\Component\Finder\Finder();
+
+            $finder = new \Symfony\Component\Finder\Finder;
             $finder->files()->in(kirby()->root('index'))
                 ->notPath('/.*node_modules.*/')
                 ->name('stories');
             foreach ($finder->directories() as $dir) {
                 return $dir->getRealPath();
             }
+
             return null;
         },
         'stories' => [
@@ -31,7 +32,7 @@ Kirby::plugin('bnomei/storybook', [
         ],
     ],
     'commands' => [ // https://github.com/getkirby/cli
-        'storybook:watch' => require __DIR__ . '/commands/watch.php',
+        'storybook:watch' => require __DIR__.'/commands/watch.php',
     ],
     'components' => [
         'snippet' => function (\Kirby\Cms\App $kirby, $name, array $data = [], bool $slots = false) {
@@ -56,15 +57,15 @@ Kirby::plugin('bnomei/storybook', [
                 $data,
                 $slots,
             );
-        }
+        },
     ],
 ]);
 
-if (!class_exists('Bnomei\Storybook')) {
-    require_once __DIR__ . '/classes/Storybook.php';
+if (! class_exists('Bnomei\Storybook')) {
+    require_once __DIR__.'/classes/Storybook.php';
 }
 
-if (!function_exists('storybook')) {
+if (! function_exists('storybook')) {
     function storybook(array $csf = [], ?string $filepath = null): array
     {
         $backfiles = debug_backtrace();
@@ -74,7 +75,7 @@ if (!function_exists('storybook')) {
     }
 }
 
-if (!function_exists('storybook_block')) {
+if (! function_exists('storybook_block')) {
     function storybook_block(string $type, array $content = []): \Kirby\Cms\Block
     {
         return new \Kirby\Cms\Block([
@@ -84,11 +85,13 @@ if (!function_exists('storybook_block')) {
     }
 }
 
-if (!function_exists('storybook_slots')) {
+// Passing the $slot or $slots variables to snippets is not supported.
+/*
+if (! function_exists('storybook_slots')) {
     function storybook_slots(array $content = [], ?string $file = null): \Kirby\Template\Slots
     {
-        if (!$file) {
-            $file = \Kirby\Toolkit\Str::random(5) . '.php';
+        if (! $file) {
+            $file = \Kirby\Toolkit\Str::random(5).'.php';
         }
         $slots = [];
         foreach ($content as $key => $value) {
@@ -98,3 +101,4 @@ if (!function_exists('storybook_slots')) {
         return new \Kirby\Template\Slots($slots);
     }
 }
+*/

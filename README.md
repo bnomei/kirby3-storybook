@@ -4,9 +4,9 @@
 [![Discord](https://flat.badgen.net/badge/discord/bnomei?color=7289da&icon=discord&label)](https://discordapp.com/users/bnomei)
 [![Buymecoffee](https://flat.badgen.net/badge/icon/donate?icon=buymeacoffee&color=FF813F&label)](https://www.buymeacoffee.com/bnomei)
 
-Kirby Plugin to generate Storybook stories from snippets and templates.
+Kirby Plugin to generate [Storybook](https://storybook.js.org/) stories from PHP snippets and templates.
 
-![screenshot](https://raw.githubusercontent.com/bnomei/kirby3-storybook/main/screenshot.png)
+<img src="https://raw.githubusercontent.com/bnomei/kirby3-storybook/main/screenshot.png" alt="screenshot" style="max-width: 50%;" />
 
 ## Install
 
@@ -23,20 +23,30 @@ You need to install the CLI with composer since this plugin depends on the CLI t
 
 ### Storybook
 
-Please refer to the [official docs](https://storybook.js.org/docs/7.0/vue/get-started/install) on how to install Storybook if in doubt.
+Please refer to the [official docs](https://storybook.js.org/docs/get-started/install) on how to install Storybook if in doubt.
 
 ```bash
-npm install storybook --sav-dev
+npx storybook@latest init --type vue3
+# select vite as bundler and then...
+npm install @vitejs/plugin-vue --save-dev
 ```
 
-> TIP: I used storybook@^7.0.0-beta.12 for my tests.
+> [!TIP]
+> I used storybook@^8.4 and vue3 for my tests, but you can stick to vue2 if you want to keep it consistent to other Kirby components.
 
-```bash
-npx storybook init --type vue3
+### Vite Config
+
+If you are using Vite as your bundler you might need to adjust the `vite.config.mjs` to properly load Vue components.
+
+```js
+import { defineConfig } from "vite";
+import vue from "@vitejs/plugin-vue";
+
+export default defineConfig({
+  plugins: [vue()],
+});
 ```
 
-> TIP: I used vue3 for my tests, but you can stick to vue if you want to keep it consistent to other Kirby components.
->
 ## Usage
 
 ### Creating stories
@@ -66,15 +76,16 @@ You need to run two tasks. First start Storybook.
 npm run storybook
 ```
 
-> TIP: Make sure you can run storybook after installation at least once without errors. Then remove the demo files or copy them to a different location in case you need them for reference (like I usually do).
+> [!NOTE]
+> Make sure you can run storybook after installation at least once without errors. Then remove the demo files or copy them to a different location in case you need them for reference (like I usually do).
 
-In a different shell run the file watcher.
+Secondly, in a different shell run the file watcher powered by the Kirby Storybook plugin.
 
 ```bash
 kirby storybook:watch
 ```
 
-The file watcher provided by this plugin needs the Kirby CLI and has various options for interval, displaying errors, running only once and a file pattern match. See help for details.
+The file watcher provided by this plugin needs the Kirby CLI and has various options for interval, displaying errors, running only once and a file pattern match. Call with `--help` for details.
 
 Some examples:
 
@@ -88,7 +99,7 @@ kirby storybook:watch --pattern '/.*blocks\/.*/'
 
 ### Generated Files
 
-The plugin will use the file watcher to monitor your Snippet/Template files and their story config files (aka `*.stories.yml|json`). If any of these files changes it will generate or overwrite the corresponding files in your Storybook `stories` folder. Creating subfolders as needed to match Kirbys extension registry (like `snippets/blocks`). It will NOT remove any files. There are three files created for each story.
+The plugin will use the file watcher to monitor your Snippet/Template files and their story config files (aka `*.stories.yml|json`). If any of these files changes it will generate or overwrite the corresponding files in your Storybook `stories` folder. Creating subfolders as needed to match Kirby's extension registry (like `snippets/blocks`). It will NOT remove any files. There are three files created for each story.
 
 - `Example.html` contains the rendered HTML and will be **overwritten on changes** to the source files.
 - `Example.stories.js` defines details about your story for Storybook, like title or variants. It will only be created if missing. You can edit it as you like.
@@ -98,23 +109,28 @@ The plugin will use the file watcher to monitor your Snippet/Template files and 
 
 You could add the reference your a single css file manually with `<style src="./../../app.css"></style>` and import all your scripts to each vue SFC. But my suggested method [out of 6](https://betterprogramming.pub/6-ways-to-configure-global-styles-for-storybook-faa1517aaf1a) would be to import your assets in the `./storybook/preview.js` and/or `.storybook/main.js` that storybook created. See example below:
 
-**./storybook/preview.js**
+**./storybook/preview.ts**
 ```diff
 + import './../assets/css/app.css'
 + import "./../assets/js/alpine.min"
 
-export const parameters = {
-  actions: { argTypesRegex: "^on[A-Z].*" },
-  controls: {
-    matchers: {
-      color: /(background|color)$/i,
-      date: /Date$/,
+import type { Preview } from "@storybook/vue3";
+
+const preview: Preview = {
+  parameters: {
+    controls: {
+      matchers: {
+        color: /(background|color)$/i,
+        date: /Date$/i,
+      },
     },
   },
-}
+};
+
+export default preview;
 ```
 
-**./storybook/main.js**
+**./storybook/main.ts**
 ```diff
   ...
   "docs": {
@@ -142,7 +158,6 @@ export const parameters = {
 
 - [Storybook](https://storybook.js.org/)
 - [Kirby CLI](https://github.com/getkirby/cli)
-- [CLImate](https://github.com/thephpleague/climate)
 - [Symfony Finder](https://symfony.com/doc/current/components/finder.html)
 
 ## Disclaimer

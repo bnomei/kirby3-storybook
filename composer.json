@@ -1,9 +1,9 @@
 {
     "name": "bnomei/kirby3-storybook",
     "type": "kirby-plugin",
-    "version": "1.0.4",
+    "version": "2.0.0",
     "license": "MIT",
-    "description": "Kirby 3 Plugin to generate Storybook stories from snippets and templates",
+    "description": "Kirby Plugin to generate Storybook stories from PHP snippets and templates",
     "authors": [
         {
             "name": "Bruno Meilick",
@@ -11,9 +11,9 @@
         }
     ],
     "keywords": [
-        "kirby3",
-        "kirby3-cms",
-        "kirby3-plugin",
+        "kirby",
+        "kirby-cms",
+        "kirby-plugin",
         "storybook",
         "filewatcher",
         "template",
@@ -34,34 +34,29 @@
         "optimize-autoloader": true,
         "sort-packages": true,
         "allow-plugins": {
-            "getkirby/composer-installer": true
+            "getkirby/composer-installer": true,
+            "pestphp/pest-plugin": true
         }
     },
     "require": {
-        "php": ">=8.0",
+        "php": ">=8.2",
         "getkirby/composer-installer": "^1.2",
         "symfony/deprecation-contracts": "^3.0.1",
-        "symfony/finder": "^6.0"
+        "symfony/finder": "^7.0"
     },
     "require-dev": {
-        "getkirby/cli": "^1.1.0",
-        "getkirby/cms": "^3.9.0-rc.1",
-        "php-coveralls/php-coveralls": "^2.4",
-        "phpunit/phpunit": "^9.5"
+        "getkirby/cms": "^5.0.0-alpha.4",
+        "larastan/larastan": "^v3.0.0",
+        "laravel/pint": "^1.13",
+        "pestphp/pest": "^v3.5.1",
+        "spatie/ray": "^1.39"
     },
     "scripts": {
-        "build": [
-            "yarn",
-            "yarn run build"
-        ],
-        "analyze": "phpstan analyse classes",
-        "fix": "php-cs-fixer fix",
-        "test": [
-            "mkdir -p tests/logs",
-            "@putenv XDEBUG_MODE=coverage",
-            "phpunit --configuration ./phpunit.xml"
-        ],
+        "stan": "./vendor/bin/phpstan",
+        "fix": "./vendor/bin/pint",
+        "test": "./vendor/bin/pest --profile",
         "dist": [
+            "composer fix",
             "composer install --no-dev --optimize-autoloader",
             "git rm -rf --cached .; git add .;"
         ],
@@ -69,7 +64,9 @@
             "composer install",
             "composer update",
             "composer install --working-dir=tests/kirby --no-dev --optimize-autoloader",
-            "composer update --working-dir=tests/kirby"
+            "composer update --working-dir=tests/kirby",
+            "sed -i.bak 's/function dump(/function xdump(/g' tests/kirby/config/helpers.php",
+            "sed -i.bak 's/function e(/function xe(/g' tests/kirby/config/helpers.php"
         ]
     },
     "extra": {

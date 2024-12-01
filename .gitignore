@@ -8,6 +8,7 @@ node_modules
 /tests/kirby
 /tests/logs
 /tests/media
+/tests/examples
 /tests/site/accounts
 /tests/site/cache
 /tests/site/sessions
@@ -34,3 +35,5 @@ node_modules
 /vendor/**/php4/*
 /vendor/getkirby/composer-installer
 
+
+*storybook.log
