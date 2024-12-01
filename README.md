@@ -32,7 +32,7 @@ npm install @vitejs/plugin-vue --save-dev
 ```
 
 > [!TIP]
-> I used storybook@^8.4 and vue3 for my tests, but you can stick to vue2 if you want to keep it consistent to other Kirby components.
+> I used Storybook@^8.4 and Vue3 with Vite as bundler for my test.
 
 ### Vite Config
 
