@@ -228,8 +228,16 @@ final class Storybook
         }
 
         // stories.js, but do not overwrite existing
-        $js = "$outputFolder/$root/$base/$local.stories.js";
-        if (! F::exists($js)) {
+        // allow various JS formats
+        $exists = false;
+        foreach(['js', 'jsx', 'mjs', 'ts', 'tsx'] as $ext) {
+            $js = "$outputFolder/$root/$base/$local.stories.$ext";
+            if (F::exists($js)) {
+                $exists = true;
+                break;
+            }
+        }
+        if (! $exists) {
             F::write(
                 $js,
                 "import My$camel from './$local.vue';

@@ -21,7 +21,7 @@ composer require bnomei/kirby3-storybook --dev
 
 You need to install the CLI with composer since this plugin depends on the CLI to be available either globally or locally.
 
-### Storybook
+### Storybook & Vue3
 
 Please refer to the [official docs](https://storybook.js.org/docs/get-started/install) on how to install Storybook if in doubt.
 
@@ -104,6 +104,9 @@ The plugin will use the file watcher to monitor your Snippet/Template files and 
 - `Example.html` contains the rendered HTML and will be **overwritten on changes** to the source files.
 - `Example.stories.js` defines details about your story for Storybook, like title or variants. It will only be created if missing. You can edit it as you like.
 - `Example.vue` standard Vue SFC. It references to the HTML file. This file allows you to add custom js/css or when the source is finalized remove the reference, copy the HTML into the vue-file and add support for variants etc.
+
+> [!TIP]
+> The plugin will not overwrite the `*.stories.@(js|jsx|mjs|ts|tsx)` and `*.vue` files if they already exist. This allows you to customize the stories as needed with the full power of Storybook.
 
 #### Adding your CSS and JS assets
 
