@@ -28,7 +28,11 @@ Kirby::plugin('bnomei/storybook', [
         'stories' => [
             'json' => fn () => class_exists('Kirby\Kql\Kql'),
             'yml' => true,
-            'ignore' => [],
+            'ignore' => [
+                'vendor',
+                'site/plugins/kirby3-feed',
+                'site/plugins/kirby3-htmlhead',
+            ],
         ],
     ],
     'commands' => [ // https://github.com/getkirby/cli
