@@ -10,6 +10,7 @@ use Kirby\Data\Json;
 use Kirby\Data\Yaml;
 use Kirby\Filesystem\Dir;
 use Kirby\Filesystem\F;
+use Kirby\Kql\Kql;
 use Kirby\Toolkit\A;
 use Kirby\Toolkit\Str;
 use Symfony\Component\Finder\Finder;
@@ -49,7 +50,7 @@ final class Storybook
 
     public function csf(array $csf, string $filepath): array
     {
-        if (! \Bnomei\Storybook::singleton()->option('cli')) {
+        if (! Storybook::singleton()->option('cli')) {
             return [];
         }
 
@@ -74,7 +75,7 @@ final class Storybook
             $data = array_merge(Yaml::read($filePrefix.'.stories.yml'), $data);
         }
         if ($this->option('stories_json') && empty($csf) && F::exists($filePrefix.'.stories.json')) {
-            $data = array_merge(\Kirby\Kql\Kql::run(Json::read($filePrefix.'.stories.json')), $data);
+            $data = array_merge(Kql::run(Json::read($filePrefix.'.stories.json')), $data);
         }
 
         // transform block and slots

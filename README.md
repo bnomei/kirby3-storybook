@@ -97,6 +97,52 @@ kirby storybook:watch --pattern article
 kirby storybook:watch --pattern '/.*blocks\/.*/'
 ```
 
+### Storybook output folder
+
+The Storybook `stories` folder must already exist in one of the two locations the plugin checks. For a standard Kirby installation where `public/` is the index root, the recommended location is the project-root `stories/` directory (`<index>/../stories`):
+
+```text
+my-project/
+├── public/                  # Kirby index root
+│   └── index.php
+├── site/
+└── stories/                # recommended: <index>/../stories
+```
+
+Alternatively, place the folder inside the index root at `<index>/stories`:
+
+```text
+my-project/
+├── public/                  # Kirby index root
+│   ├── index.php
+│   └── stories/            # alternative: <index>/stories
+└── site/
+```
+
+If both folders exist, `<index>/stories` takes precedence. To use any other location, configure it explicitly in `site/config/config.php`:
+
+```php
+<?php
+
+return [
+    'bnomei.storybook.folder' => dirname(__DIR__, 2).'/storybook/stories',
+];
+```
+
+For example, that configuration supports this layout:
+
+```text
+my-project/
+├── public/
+├── site/
+│   └── config/
+│       └── config.php
+└── storybook/
+    └── stories/            # explicitly configured location
+```
+
+The configured directory must also exist before running the watcher. The plugin deliberately does not recursively discover `stories` folders elsewhere: recursive discovery can traverse large trees such as `public/media` and cause severe performance problems.
+
 ### Generated Files
 
 The plugin will use the file watcher to monitor your Snippet/Template files and their story config files (aka `*.stories.yml|json`). If any of these files changes it will generate or overwrite the corresponding files in your Storybook `stories` folder. Creating subfolders as needed to match Kirby's extension registry (like `snippets/blocks`). It will NOT remove any files. There are three files created for each story.
@@ -151,7 +197,7 @@ export default preview;
 | bnomei.storybook. | Default    | Description                                                  |
 |-------------------|------------|--------------------------------------------------------------|
 | cli               | `callback` | detect if is cli and only then inject values                 |
-| folder            | `callback` | logic to find you Storybook stories folder, adjust if needed |
+| folder            | `callback` | checks `<index>/stories`, then `<index>/../stories`; can be configured explicitly |
 | stories.json      | `callback` | if KQL exists allow loading from json files                  |
 | stories.yml       | `true`     | allow loading from yml files                                 |
 | stories.ignore    | `[...]`    | array of string, if matches any file will not be rendered    |
@@ -172,4 +218,3 @@ This plugin is provided "as is" with no guarantee. Use it at your own risk and a
 [MIT](https://opensource.org/licenses/MIT)
 
 It is discouraged to use this plugin in any project that promotes racism, sexism, homophobia, animal abuse, violence or any other form of hate speech.
-

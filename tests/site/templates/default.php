@@ -1,6 +1,8 @@
 <?php
 
+use Bnomei\Storybook;
+
 snippet('demo', [/* no $date */ 'date' => 'demo']);
 
-var_dump(Bnomei\Storybook::singleton()->snippets());
-var_dump(Bnomei\Storybook::singleton()->templates());
+var_dump(Storybook::singleton()->snippets());
+var_dump(Storybook::singleton()->templates());

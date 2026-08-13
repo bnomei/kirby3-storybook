@@ -1,8 +1,8 @@
 <?php return array(
     'root' => array(
         'name' => 'bnomei/kirby3-storybook',
-        'pretty_version' => '2.0.2',
-        'version' => '2.0.2.0',
+        'pretty_version' => '2.0.3',
+        'version' => '2.0.3.0',
         'reference' => null,
         'type' => 'kirby-plugin',
         'install_path' => __DIR__ . '/../../',
@@ -11,8 +11,8 @@
     ),
     'versions' => array(
         'bnomei/kirby3-storybook' => array(
-            'pretty_version' => '2.0.2',
-            'version' => '2.0.2.0',
+            'pretty_version' => '2.0.3',
+            'version' => '2.0.3.0',
             'reference' => null,
             'type' => 'kirby-plugin',
             'install_path' => __DIR__ . '/../../',
@@ -29,18 +29,18 @@
             'dev_requirement' => false,
         ),
         'symfony/deprecation-contracts' => array(
-            'pretty_version' => 'v3.6.0',
-            'version' => '3.6.0.0',
-            'reference' => '63afe740e99a13ba87ec199bb07bbdee937a5b62',
+            'pretty_version' => 'v3.7.1',
+            'version' => '3.7.1.0',
+            'reference' => 'f3202fa1b5097b0af062dc978b32ecf63404e31d',
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/deprecation-contracts',
             'aliases' => array(),
             'dev_requirement' => false,
         ),
         'symfony/finder' => array(
-            'pretty_version' => 'v7.3.2',
-            'version' => '7.3.2.0',
-            'reference' => '2a6614966ba1074fa93dae0bc804227422df4dfe',
+            'pretty_version' => 'v7.4.14',
+            'version' => '7.4.14.0',
+            'reference' => '13b38720174286f55d1761152b575a8d1436fc25',
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/finder',
             'aliases' => array(),

@@ -1,5 +1,9 @@
 <?php
 
+use Bnomei\Storybook;
+use Kirby\Cms\App;
+use Kirby\Cms\Block;
+
 @include_once __DIR__.'/vendor/autoload.php';
 
 Kirby::plugin('bnomei/storybook', [
@@ -13,14 +17,6 @@ Kirby::plugin('bnomei/storybook', [
                 if (Dir::exists($dir)) {
                     return $dir;
                 }
-            }
-
-            $finder = new \Symfony\Component\Finder\Finder;
-            $finder->files()->in(kirby()->root('index'))
-                ->notPath('/.*node_modules.*/')
-                ->name('stories');
-            foreach ($finder->directories() as $dir) {
-                return $dir->getRealPath();
             }
 
             return null;
@@ -39,7 +35,7 @@ Kirby::plugin('bnomei/storybook', [
         'storybook:watch' => require __DIR__.'/commands/watch.php',
     ],
     'components' => [
-        'snippet' => function (\Kirby\Cms\App $kirby, $name, array $data = [], bool $slots = false) {
+        'snippet' => function (App $kirby, $name, array $data = [], bool $slots = false) {
             // support other plugins if installed
             // https://github.com/lukaskleinschmidt/kirby-snippet-controller
             if (function_exists('snippet_controller')) {
@@ -47,12 +43,14 @@ Kirby::plugin('bnomei/storybook', [
             }
 
             // merge data with...
-            $storybook = \Bnomei\Storybook::singleton();
-            if ($storybook->option('cli')) {
-                $data = $storybook->loadData(
-                    $data,
-                    $name
-                );
+            if (PHP_SAPI === 'cli') {
+                $storybook = Storybook::singleton();
+                if ($storybook->option('cli')) {
+                    $data = $storybook->loadData(
+                        $data,
+                        $name
+                    );
+                }
             }
 
             return $kirby->core()->components()['snippet'](
@@ -75,14 +73,14 @@ if (! function_exists('storybook')) {
         $backfiles = debug_backtrace();
         $filepath ??= $backfiles[0]['file'];
 
-        return \Bnomei\Storybook::singleton()->csf($csf, $filepath);
+        return Storybook::singleton()->csf($csf, $filepath);
     }
 }
 
 if (! function_exists('storybook_block')) {
-    function storybook_block(string $type, array $content = []): \Kirby\Cms\Block
+    function storybook_block(string $type, array $content = []): Block
     {
-        return new \Kirby\Cms\Block([
+        return new Block([
             'type' => $type,
             'content' => $content,
         ]);
