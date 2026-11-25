@@ -1,5 +1,6 @@
 # Kirby Storybook
 
+[![Kirby 6](https://flat.badgen.net/badge/Kirby/6?color=ECC748)](https://getkirby.com)
 ![Release](https://flat.badgen.net/packagist/v/bnomei/kirby3-storybook?color=ae81ff&icon=github&label)
 [![Discord](https://flat.badgen.net/badge/discord/bnomei?color=7289da&icon=discord&label)](https://discordapp.com/users/bnomei)
 [![Buymecoffee](https://flat.badgen.net/badge/icon/donate?icon=buymeacoffee&color=FF813F&label)](https://www.buymeacoffee.com/bnomei)
